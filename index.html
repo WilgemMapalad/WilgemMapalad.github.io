@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wilgem Mapalad — UI/UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --warm-white: #FDFAF7;
+    --warm-paper: #F5EFE8;
+    --ink: #2A2420;
+    --ink-soft: #5C4F47;
+    --muted: #9A8A80;
+    --accent: #B5453A;
+    --accent-light: #FAF0EE;
+    --accent-mid: #D4706A;
+    --accent-hover: #9C3530;
+    --border: rgba(42,36,32,0.08);
+    --border-accent: rgba(181,69,58,0.18);
+    --card-bg: #FFFCFA;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 4rem;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+  }
+  .nav-logo em { font-style: italic; color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 5rem;
+    align-items: center;
+    padding: 7rem 4rem 6rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hero-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .hero-label-line { width: 32px; height: 1px; background: var(--accent-mid); }
+  .hero-label-text {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--accent-mid);
+    text-transform: uppercase;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5.5vw, 4.75rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 1.75rem;
+    letter-spacing: -0.01em;
+  }
+  .hero-title em { font-style: italic; font-weight: 400; color: var(--accent); }
+  .hero-sub {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.85;
+    max-width: 440px;
+    margin-bottom: 2.75rem;
+  }
+  .hero-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 1px;
+    text-decoration: none;
+    transition: background 0.25s;
+  }
+  .hero-cta:hover { background: var(--accent-hover); }
+  .hero-cta-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    background: transparent;
+    color: var(--ink-soft);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    border-radius: 1px;
+    text-decoration: none;
+    transition: border-color 0.25s, color 0.25s;
+  }
+  .hero-cta-ghost:hover { border-color: var(--accent-mid); color: var(--accent); }
+
+  /* HERO VISUAL */
+  .hero-visual { display: flex; justify-content: flex-end; align-items: center; }
+  .avatar-wrap { position: relative; width: 320px; height: 390px; }
+  .avatar-bg {
+    position: absolute; inset: 0;
+    background: var(--accent-light);
+    border-radius: 7px;
+    border: 1px solid var(--border-accent);
+  }
+  .avatar-corner {
+    position: absolute; top: 16px; right: 16px;
+    width: 48px; height: 48px;
+    border-top: 1px solid var(--accent-mid);
+    border-right: 1px solid var(--accent-mid);
+    opacity: 1;
+  }
+  .avatar-corner-bl {
+    position: absolute; bottom: 16px; left: 16px;
+    width: 48px; height: 48px;
+    border-bottom: 1px solid var(--accent-mid);
+    border-left: 1px solid var(--accent-mid);
+    opacity: 1;
+    z-index: 2;
+  }
+  .avatar-tag {
+    position: absolute; bottom: -1.1rem; left: -1.1rem;
+    background: var(--warm-paper);
+    color: var(--ink-soft);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--border-accent);
+    border-radius: 1px;
+    z-index: 2; /* add this */
+  }
+  .avatar-img {
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 95%;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 6px;
+  }
+  .avatar-available {
+    position: absolute; top: 1.25rem; left: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.68rem;
+    color: var(--accent-mid);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+  }
+  .avatar-dot { width: 7px; height: 7px; border-radius: 50%; background: #7CC08A; flex-shrink: 0; }
+
+  /* STATS */
+  .stats-bar {
+    padding: 2.25rem 4rem;
+    display: flex;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto 5rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+    color: var(--ink);
+  }
+  .stat-num em { font-style: italic; color: var(--accent); }
+  .stat-label { font-size: 0.72rem; color: var(--muted); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* SECTIONS */
+  .section { padding: 2.25rem 4rem; max-width: 1200px; margin: 0 auto; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; letter-spacing: 0.01em; }
+  .section-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .section-link { font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+  .section-link:hover { color: var(--accent); }
+
+  /* PROJECTS GRID */
+  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+  .projects-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+  .projects-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(42,36,32,0.07); border-color: var(--border-accent); }
+  .projects-card.large { grid-column: 1 / -1; }
+  .projects-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    position: relative;
+    overflow: hidden;
+    gap: 7px;
+  }
+  .projects-thumb img {
+    height: 90%;
+    width: auto;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .thumb-a { background: #F5EDEB; color: rgba(181,69,58,0.2); }
+  .thumb-b { background: #EDE8E5; color: rgba(42,36,32,0.12); }
+  .thumb-c { background: #EAE8F0; color: rgba(42,36,32,0.1); }
+  .projects-meta { padding: 1.25rem 1.5rem 1.35rem; display: flex; justify-content: space-between; align-items: flex-start; }
+  .projects-num { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-style: italic; color: var(--accent-mid); margin-bottom: 0.2rem; display: block; }
+  .projects-name { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.2rem; letter-spacing: 0.01em; }
+  .projects-type { font-size: 0.74rem; color: var(--muted); font-weight: 300; letter-spacing: 0.06em; }
+  .projects-arrow { font-size: 1rem; color: var(--accent-mid); margin-top: 4px; transition: color 0.2s; }
+  .projects-card:hover .projects-arrow { color: var(--accent); }
+
+  /* EXPERIENCE */
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem 3rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .exp-item:first-child { padding-top: 0; }
+  .exp-role {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.01em;
+  }
+  .exp-company {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    font-weight: 400;
+  }
+  .exp-desc { font-size: 0.82rem; color: var(--ink-soft); font-weight: 300; line-height: 1.7; }
+  .exp-desc li { margin-left: 1rem; margin-bottom: 0.25rem; }
+  .exp-date {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding-top: 0.25rem;
+    text-align: right;
+  }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+  .skill-card { padding: 1.75rem 1.5rem; background: var(--card-bg); transition: background 0.2s; }
+  .skill-card:hover { background: var(--accent-light); }
+  .skill-num { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-style: italic; color: var(--accent); opacity: 0.5; margin-bottom: 0.75rem; display: block; font-weight: 300; }
+  .skill-name { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; letter-spacing: 0.04em; }
+  .skill-desc { font-size: 0.76rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .about-text p { font-size: 1rem; font-weight: 300; line-height: 1.9; color: var(--ink-soft); margin-bottom: 1.1rem; }
+  .about-text p strong { color: var(--ink); font-weight: 500; }
+
+  .about-sub { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-mid); margin: 1.75rem 0 0.85rem; }
+
+  .tools-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tool-pill {
+    font-size: 0.7rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid var(--border); border-radius: 1px;
+    color: var(--muted); background: transparent;
+    transition: border-color 0.2s, color 0.2s; cursor: default;
+  }
+  .tool-pill:hover { border-color: var(--accent-mid); color: var(--accent); }
+
+  .edu-list { display: flex; flex-direction: column; gap: 1rem; }
+  .edu-item { padding: 1.1rem 1.25rem; border: 1px solid var(--border); border-left: 3px solid var(--accent-light); border-radius: 1px; background: var(--card-bg); transition: border-left-color 0.2s; }
+  .edu-item:hover { border-left-color: var(--accent-mid); }
+  .edu-degree { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.2rem; }
+  .edu-school { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; color: var(--accent); font-weight: 400; margin-bottom: 0.15rem; }
+  .edu-detail { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; }
+
+  /* CONTACT */
+  .contact-band {
+    background: var(--warm-paper);
+    border-top: 1px solid var(--border);
+    padding: 5.5rem 4rem;
+    text-align: center;
+  }
+  .contact-eyebrow { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .contact-eyebrow-line { width: 24px; height: 1px; background: var(--accent-mid); opacity: 0.6; }
+  .contact-eyebrow-text { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em; color: var(--accent-mid); text-transform: uppercase; }
+  .contact-band h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--ink); font-weight: 300; font-style: italic; margin-bottom: 0.75rem; }
+  .contact-band p { color: var(--muted); font-size: 0.9rem; font-weight: 300; margin-bottom: 2.5rem; }
+  .contact-btn {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.76rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+    border-radius: 1px; text-decoration: none;
+    transition: background 0.25s;
+  }
+  .contact-btn:hover { background: var(--accent-hover); }
+  .contact-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+  .contact-links a { font-size: 0.74rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .contact-links a:hover { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    background: var(--warm-white);
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer span { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em; }
+  .footer-links { display: flex; gap: 1.75rem; }
+  .footer-links a { font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-label   { animation: fadeUp 0.5s ease both; }
+  .hero-title   { animation: fadeUp 0.6s 0.08s ease both; }
+  .hero-sub     { animation: fadeUp 0.6s 0.18s ease both; }
+  .hero-actions { animation: fadeUp 0.6s 0.28s ease both; }
+  .hero-visual  { animation: fadeUp 0.7s 0.12s ease both; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1.5rem 2rem; }
+    .hero { grid-template-columns: 1fr; padding: 4rem 2rem 3rem; gap: 3rem; }
+    .hero-visual { justify-content: center; }
+    .stats-bar { padding: 1.5rem 2rem; gap: 2rem; }
+    .section { padding: 4rem 2rem 3rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .projects-card.large { grid-column: auto; }
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    .about-grid { grid-template-columns: 1fr; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .exp-date { text-align: left; }
+    .contact-band { padding: 3.5rem 2rem; }
+    footer { padding: 1.5rem 2rem; }
+  }
+  @media (max-width: 600px) {
+    .nav-links { gap: 1.25rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 2.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">Wilgem <em>Mapalad</em></a>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <div class="hero-label">
+      <div class="hero-label-line"></div>
+      <span class="hero-label-text">UI / UX Designer · Quezon City, PH</span>
+    </div>
+    <h1 class="hero-title">
+      Designing interfaces<br>people <em>actually</em><br>enjoy using.
+    </h1>
+    <p class="hero-sub">
+      Hi, I'm Wilgem — a UI/UX designer and IT student at New Era University with hands-on experience in Figma, prototyping, and front-end development. Currently interning at Simplevia Technologies.
+    </p>
+    <div class="hero-actions">
+      <a class="hero-cta" href="#projects">View Projects →</a>
+      <a class="hero-cta-ghost" href="#contact">Get in touch</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="avatar-wrap">
+      <div class="avatar-bg"></div>
+      <div class="avatar-corner"></div>
+      <div class="avatar-corner-bl"></div>
+      <div class="avatar-available">
+        <div class="avatar-dot"></div>
+        Available for work
+      </div>
+      <div class="avatar-tag">UI/UX Designer · Philippines</div>
+      <img class="avatar-img" src="profile.png" alt="Wilgem's profile photo">
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num">3<em>+</em></div>
+    <div class="stat-label">Years studying IT</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num"><em>∞</em></div>
+    <div class="stat-label">Figma frames</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">1<em>+</em></div>
+    <div class="stat-label">App shipped</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">8<em>+</em></div>
+    <div class="stat-label">Tools mastered</div>
+  </div>
+</div>
+
+<!-- PROJECT -->
+<div class="section" id="projects">
+  <div class="section-header">
+    <h2 class="section-title">Selected <em>Projects</em></h2>
+    <a class="hero-cta" href="projects.html">View More →</a>
+  </div>
+  <div class="projects-grid">
+    <a class="projects-card large" href="studysync.html">
+      <div class="projects-thumb thumb-a">
+        <img src="studysync_ui/Fragment Home.png" alt="StudySync Home">
+        <img src="studysync_ui/Fragment Set.png" alt="StudySync Set">
+        <img src="studysync_ui/Fragment Chatroom.png" alt="StudySync Chatroom">
+        <img src="studysync_ui/Fragment User Profile.png" alt="StudySync Profile">
+      </div>
+      <div class="projects-meta">
+        <div>
+          <span class="projects-num">01</span>
+          <div class="projects-name">StudySync — Android Flashcard & Quiz App</div>
+          <div class="projects-type">UI Design · Android Development · Java</div>
+        </div>
+        <div class="projects-arrow">↗</div>
+      </div>
+    </a>
+    <a class="projects-card" href="luckyhotel.html">
+      <div class="projects-thumb thumb-b">
+        <img src="luckyhotel_ui/home.png" alt="Lucky Hotel Home">
+      </div>
+      <div class="projects-meta">
+        <div>
+          <span class="projects-num">02</span>
+          <div class="projects-name">Lucky Hotel - Website Design</div>
+          <div class="projects-type">UI Design · Web Development · PHP</div>
+        </div>
+        <div class="projects-arrow">↗</div>
+      </div>
+    </a>
+    <a class="projects-card" href="phileats.html">
+      <div class="projects-thumb thumb-c">
+        <img src="phileats_ui/Overview.png" alt="PhilEats Overview">
+        <img src="phileats_ui/Add Recipe.png" alt="PhilEats Add Recipe">
+        <img src="phileats_ui/Luzon.png" alt="PhilEats Luzon">
+      </div>
+      <div class="projects-meta">
+        <div>
+          <span class="projects-num">03</span>
+          <div class="projects-name">PhilEats — Delicacy Foods in the Philippines</div>
+          <div class="projects-type">UI/UX Design · Kotlin</div>
+        </div>
+        <div class="projects-arrow">↗</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<div class="section" id="experience">
+  <div class="section-header">
+    <h2 class="section-title">My <em>experience</em></h2>
+  </div>
+  <div class="exp-list">
+    <div class="exp-item">
+      <div>
+        <div class="exp-company">Simplevia Technologies Inc.</div>
+        <div class="exp-role">UI/UX Design Intern</div>
+        <ul class="exp-desc">
+          <li>Designing websites and prototyping using Figma for the UI/UX department</li>
+          <li>Collaborating with the team on design decisions and iterating on feedback</li>
+        </ul>
+      </div>
+      <div class="exp-date">Oct 2025 – May 2026</div>
+    </div>
+    <div class="exp-item">
+      <div>
+        <div class="exp-company">New Era University — Coursework</div>
+        <div class="exp-role">StudySync — Android Flashcard & Quiz App</div>
+        <ul class="exp-desc">
+          <li>Led the flashcard module of StudySync, a collaborative Android study app with chat room integration</li>
+          <li>Built front-end interfaces for creating, editing, and previewing flashcards</li>
+          <li>Gained hands-on experience in Android development (Java), UI design, and Git collaboration</li>
+        </ul>
+      </div>
+      <div class="exp-date">Academic Project</div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">What I <em>do</em></h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <span class="skill-num">i.</span>
+      <div class="skill-name">UI/UX Design</div>
+      <div class="skill-desc">Designing websites and prototypes in Figma with a sharp eye for layout, typography, and user flow.</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-num">ii.</span>
+      <div class="skill-name">Prototyping</div>
+      <div class="skill-desc">Building interactive, high-fidelity prototypes that communicate intent and enable fast feedback.</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-num">iii.</span>
+      <div class="skill-name">Front-end Development</div>
+      <div class="skill-desc">Turning designs into working interfaces using HTML, XML, Java, and Android Studio.</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-num">iv.</span>
+      <div class="skill-name">Mobile App Development</div>
+      <div class="skill-desc">Building Android apps in Java/Kotlin with Firebase and IBM Db2 Cloud as backend solutions.</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-num">v.</span>
+      <div class="skill-name">Creative Design</div>
+      <div class="skill-desc">Visual design and branding work using Canva, Adobe Photoshop, and strong typographic sensibility.</div>
+    </div>
+    <div class="skill-card">
+      <span class="skill-num">vi.</span>
+      <div class="skill-name">Data & Productivity</div>
+      <div class="skill-desc">Comfortable with PowerBI, Lucidchart, Google Workspace, and Microsoft Office for analysis and planning.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="section" id="about">
+  <div class="section-header">
+    <h2 class="section-title">About <em>me</em></h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm <strong>Wilgem T. Mapalad</strong>, a UI/UX designer and Bachelor of Science in Information Technology student at <strong>New Era University</strong>, Quezon City.</p>
+      <p>I'm passionate about creating digital experiences that feel effortless — from wireframes to polished prototypes. My background in both design and development means I can bridge the gap between how something looks and how it works.</p>
+      <p>Currently interning at <strong>Simplevia Technologies Inc.</strong> in their UI/UX department, where I design websites and prototypes using Figma.</p>
+
+      <p class="about-sub">Tools & Technologies</p>
+      <div class="tools-list">
+        <span class="tool-pill">Figma</span>
+        <span class="tool-pill">Adobe Photoshop</span>
+        <span class="tool-pill">Canva</span>
+        <span class="tool-pill">Android Studio</span>
+        <span class="tool-pill">Java</span>
+        <span class="tool-pill">Python</span>
+        <span class="tool-pill">HTML</span>
+        <span class="tool-pill">Firebase</span>
+        <span class="tool-pill">Laragon</span>
+        <span class="tool-pill">PowerBI</span>
+        <span class="tool-pill">Lucidchart</span>
+      </div>
+    </div>
+    <div>
+      <p class="about-sub">Education</p>
+      <div class="edu-list">
+        <div class="edu-item">
+          <div class="edu-degree">BS Information Technology</div>
+          <div class="edu-school">New Era University</div>
+          <div class="edu-detail">Quezon City · 2022 – Present</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">Senior High School</div>
+          <div class="edu-school">Tanza National Trade School</div>
+          <div class="edu-detail">Tanza, Cavite · 2020 – 2022</div>
+        </div>
+      </div>
+
+      <p class="about-sub" style="margin-top:2rem;">Soft Skills</p>
+      <div class="tools-list">
+        <span class="tool-pill">Attention to Detail</span>
+        <span class="tool-pill">Typography</span>
+        <span class="tool-pill">Team Collaboration</span>
+        <span class="tool-pill">Time Management</span>
+        <span class="tool-pill">Data Analysis</span>        
+        <span class="tool-pill">Organize</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-band" id="contact">
+  <div class="contact-eyebrow">
+    <div class="contact-eyebrow-line"></div>
+    <span class="contact-eyebrow-text">Let's connect</span>
+    <div class="contact-eyebrow-line"></div>
+  </div>
+  <h2>Let's work together.</h2>
+  <p>Have a project or opportunity in mind? I'd love to hear about it.</p>
+  <a class="contact-btn" href="mailto:wilgemtmapalad@gmail.com">Say hello →</a>
+  <div class="contact-links">
+    <a href="tel:+639157620857">+63 915 762 0857</a>
+    <a href="mailto:wilgemtmapalad@gmail.com">wilgemtmapalad@gmail.com</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Wilgem T. Mapalad</span>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/wilgem-mapalad-4582813b1/">LinkedIn</a>
+    <a href="https://WilgemMapalad.github.io">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
