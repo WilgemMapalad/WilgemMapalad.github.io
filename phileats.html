@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PhilEats — Wilgem Mapalad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --warm-white: #FDFAF7;
+    --warm-paper: #F5EFE8;
+    --ink: #2A2420;
+    --ink-soft: #5C4F47;
+    --muted: #9A8A80;
+    --accent: #B5453A;
+    --accent-light: #FAF0EE;
+    --accent-mid: #D4706A;
+    --accent-hover: #9C3530;
+    --border: rgba(42,36,32,0.08);
+    --border-accent: rgba(181,69,58,0.18);
+    --card-bg: #FFFCFA;
+    --phil-peach: #E8C4A0;
+    --phil-brown: #C48A5A;
+    --phil-dark: #1a1a2e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 4rem;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+  }
+  .nav-logo em { font-style: italic; color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    background: var(--warm-paper);
+    padding: 6rem 4rem 5rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: 'PhilEats';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18vw;
+    font-weight: 300;
+    color: rgba(181,69,58,0.04);
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+    line-height: 1;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow-line { width: 24px; height: 1px; background: var(--accent-mid); opacity: 0.6; }
+  .hero-eyebrow-text {
+    font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em;
+    color: var(--accent-mid); text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { color: var(--accent); font-style: italic; }
+  .hero-desc {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    max-width: 520px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .hero-tag {
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border-accent);
+    border-radius: 99px;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--accent-mid);
+    text-transform: uppercase;
+    background: var(--accent-light);
+  }
+
+  /* MAIN CONTENT */
+  .project-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .section-eyebrow {
+    display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2.5rem;
+  }
+  .section-eyebrow-line { width: 24px; height: 1px; background: var(--accent-mid); opacity: 0.6; }
+  .section-eyebrow-text {
+    font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em;
+    color: var(--accent-mid); text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  /* PHONE GRID */
+  .screens-group {
+    margin-bottom: 5rem;
+  }
+
+  .screens-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-mid);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .screens-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .screens-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .screens-grid.col-2 { grid-template-columns: repeat(2, 1fr); }
+  .screens-grid.col-3 { grid-template-columns: repeat(3, 1fr); }
+  .screens-grid.col-4 { grid-template-columns: repeat(4, 1fr); }
+  .screens-grid.col-5 { grid-template-columns: repeat(5, 1fr); }
+
+  /* PHONE FRAME */
+  .phone-wrap { display: flex; flex-direction: column; align-items: center; }
+
+  .phone-frame {
+    background: var(--phil-dark);
+    border-radius: 36px;
+    padding: 10px;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.18),
+      0 24px 64px rgba(0,0,0,0.22),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    position: relative;
+    width: 100%;
+  }
+  .phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 16px; left: 50%;
+    transform: translateX(-50%);
+    width: 80px; height: 20px;
+    background: var(--phil-dark);
+    border-radius: 0 0 12px 12px;
+    z-index: 2;
+  }
+  .phone-screen {
+    border-radius: 28px;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    background: #E8C4A0;
+  }
+  .phone-screen img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .phone-caption {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .phone-caption strong {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--ink);
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+
+  /* OVERVIEW BANNER */
+  .overview-banner {
+    background: var(--warm-paper);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem;
+    margin-bottom: 5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+  }
+  .overview-stat { text-align: center; }
+  .overview-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .overview-stat-label {
+    font-size: 0.76rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .overview-divider {
+    width: 1px;
+    background: var(--border);
+    align-self: stretch;
+    justify-self: center;
+  }
+
+  /* NOTE */
+  .note {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.83rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* CONTACT */
+  .contact-band {
+    background: var(--warm-paper);
+    border-top: 1px solid var(--border);
+    padding: 5.5rem 4rem;
+    text-align: center;
+  }
+  .contact-eyebrow { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .contact-eyebrow-line { width: 24px; height: 1px; background: var(--accent-mid); opacity: 0.6; }
+  .contact-eyebrow-text { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em; color: var(--accent-mid); text-transform: uppercase; }
+  .contact-band h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--ink); font-weight: 300; font-style: italic; margin-bottom: 0.75rem; }
+  .contact-band p { color: var(--muted); font-size: 0.9rem; font-weight: 300; margin-bottom: 2.5rem; }
+  .contact-btn {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.76rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+    border-radius: 1px; text-decoration: none;
+    transition: background 0.25s;
+  }
+  .contact-btn:hover { background: var(--accent-hover); }
+  .contact-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+  .contact-links a { font-size: 0.74rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .contact-links a:hover { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    background: var(--warm-white);
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer span { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em; }
+  .footer-links { display: flex; gap: 1.75rem; }
+  .footer-links a { font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* FADE IN */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.65s ease forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1.5rem 2rem; }
+    .hero { padding: 4rem 2rem 3.5rem; }
+    .overview-banner { grid-template-columns: 1fr; gap: 1.5rem; }
+    .overview-divider { display: none; }
+    .screens-grid.col-4,
+    .screens-grid.col-5 { grid-template-columns: repeat(2, 1fr); }
+    .screens-grid.col-3 { grid-template-columns: repeat(2, 1fr); }
+    .contact-band { padding: 3.5rem 2rem; }
+    footer { padding: 1.5rem 2rem; }
+  }
+  @media (max-width: 560px) {
+    .nav-links { gap: 1.25rem; }
+    .screens-grid.col-2 { grid-template-columns: 1fr; max-width: 280px; margin: 0 auto; }
+    .screens-grid.col-3,
+    .screens-grid.col-4,
+    .screens-grid.col-5 { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">Wilgem <em>Mapalad</em></a>
+  <ul class="nav-links">
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="fade-up delay-1">
+      <em>PhilEats</em> —<br>Filipino Recipe App
+    </h1>
+    <p class="hero-desc fade-up delay-2">
+      A mobile app celebrating the richness of Philippine cuisine, organized by region — Luzon, Visayas, and Mindanao. Users can browse, save favorites, and contribute their own recipes.
+    </p>
+    <div class="hero-tags fade-up delay-3">
+      <span class="hero-tag">UI Design</span>
+      <span class="hero-tag">UX Design</span>
+      <span class="hero-tag">Mobile App</span>
+      <span class="hero-tag">Filipino Cuisine</span>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="project-section">
+
+  <!-- Overview stats -->
+  <div class="overview-banner">
+    <div class="overview-stat">
+      <div class="overview-stat-num">3</div>
+      <div class="overview-stat-label">Regions</div>
+    </div>
+    <div class="overview-divider"></div>
+    <div class="overview-stat">
+      <div class="overview-stat-num">9</div>
+      <div class="overview-stat-label">Screens Designed</div>
+    </div>
+    <div class="overview-divider"></div>
+    <div class="overview-stat">
+      <div class="overview-stat-num">1</div>
+      <div class="overview-stat-label">Unified Design System</div>
+    </div>
+  </div>
+
+  <!-- Onboarding -->
+  <div class="screens-group">
+    <div class="screens-label">Onboarding</div>
+    <div class="screens-grid col-2" style="height: auto; width: 700px; margin: 0 auto;">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <img src="phileats_ui/Sign Up.png" alt="Sign Up / Log In screen">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>Log In</strong>Username & password entry</div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <img src="phileats_ui/Overview.png" alt="Home / Overview screen">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>Home</strong>Region selector</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Browse by Region -->
+  <div class="screens-group">
+    <div class="screens-label">Browse by Region</div>
+    <div class="screens-grid col-3" style="height: auto; width: 1000px; margin: 0 auto;">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <img src="phileats_ui/Luzon.png" alt="Luzon recipes screen">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>Luzon</strong>Recipe grid</div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <img src="phileats_ui/Visayas.png" alt="Visayas recipes screen">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>Visayas</strong>Recipe grid</div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <img src="phileats_ui/Mindanao.png" alt="Mindanao recipes screen">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>Mindanao</strong>Recipe grid</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recipe Detail -->
+  <div class="screens-group">
+    <div class="screens-label">Recipe Detail</div>
+    <div class="screens-grid col-2" style="height: auto; width: 700px; margin: 0 auto;">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <img src="phileats_ui/Recipe Description.png" alt="Recipe description screen">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>Recipe View</strong>Ingredients &amp; steps</div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <img src="phileats_ui/Add Recipe.png" alt="Add recipe screen">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>Add Recipe</strong>Contribute a dish</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Account -->
+  <div class="screens-group">
+    <div class="screens-label">User Account</div>
+    <div class="screens-grid col-2" style="height: auto; width: 700px; margin: 0 auto;">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <img src="phileats_ui/Profile.png" alt="Profile screen">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>Profile</strong>Account &amp; log out</div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <img src="phileats_ui/Favorites.png" alt="My Favorites screen">
+          </div>
+        </div>
+        <div class="phone-caption"><strong>My Favorites</strong>Saved recipes</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="note">
+  PhilEats &nbsp;·&nbsp; A celebration of Filipino regional cuisine &nbsp;·&nbsp; UI/UX Design by Wilgem T. Mapalad
+</div>
+
+<!-- CONTACT -->
+<div class="contact-band" id="contact">
+  <div class="contact-eyebrow">
+    <div class="contact-eyebrow-line"></div>
+    <span class="contact-eyebrow-text">Let's connect</span>
+    <div class="contact-eyebrow-line"></div>
+  </div>
+  <h2>Let's work together.</h2>
+  <p>Have a project or opportunity in mind? I'd love to hear about it.</p>
+  <a class="contact-btn" href="mailto:wilgemtmapalad@gmail.com">Say hello →</a>
+  <div class="contact-links">
+    <a href="tel:+639157620857">+63 915 762 0857</a>
+    <a href="mailto:wilgemtmapalad@gmail.com">wilgemtmapalad@gmail.com</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Wilgem T. Mapalad</span>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/wilgem-mapalad-4582813b1/">LinkedIn</a>
+    <a href="https://WilgemMapalad.github.io">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>

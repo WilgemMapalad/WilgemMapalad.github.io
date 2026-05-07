@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>StudySync — Wilgem Mapalad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --warm-white: #FDFAF7;
+    --warm-paper: #F5EFE8;
+    --ink: #2A2420;
+    --ink-soft: #5C4F47;
+    --muted: #9A8A80;
+    --accent: #B5453A;
+    --accent-light: #FAF0EE;
+    --accent-mid: #D4706A;
+    --accent-hover: #9C3530;
+    --border: rgba(42,36,32,0.08);
+    --border-accent: rgba(181,69,58,0.18);
+
+    /* StudySync brand */
+    --ss-green: #22C55E;
+    --ss-green-dark: #16A34A;
+    --ss-green-light: #DCFCE7;
+    --ss-yellow: #FACC15;
+    --ss-yellow-dark: #D97706;
+    --ss-yellow-light: #FEF9C3;
+    --ss-dark: #111827;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 4rem;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+  }
+  .nav-logo em { font-style: italic; color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ss-dark);
+    padding: 7rem 4rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: 'StudySync';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16vw;
+    font-weight: 300;
+    color: rgba(34,197,94,0.06);
+    position: absolute;
+    right: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+    line-height: 1;
+  }
+  /* decorative blobs */
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(34,197,94,0.12) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .hero-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .hero-eyebrow-line { width: 24px; height: 1px; background: var(--ss-green); opacity: 0.6; }
+  .hero-eyebrow-text {
+    font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em;
+    color: var(--ss-green); text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 300;
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { color: var(--ss-green); font-style: italic; }
+
+  .hero-desc {
+    font-size: 1rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+    max-width: 480px;
+    line-height: 1.85;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .hero-tag {
+    padding: 0.4rem 1rem;
+    border-radius: 99px;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .hero-tag.green { border: 1px solid rgba(34,197,94,0.3); color: var(--ss-green); background: rgba(34,197,94,0.08); }
+  .hero-tag.yellow { border: 1px solid rgba(250,204,21,0.3); color: var(--ss-yellow); background: rgba(250,204,21,0.08); }
+
+  /* App icon in hero */
+  .hero-icon-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0.9;
+  }
+  .hero-icon {
+    width: 96px; height: 96px;
+    background: var(--ss-green);
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 60px rgba(34,197,94,0.35);
+    font-size: 3rem;
+    position: relative;
+  }
+  /* mimic the StudySync icon: person + chat bar */
+  .hero-icon-svg { width: 52px; height: 52px; }
+  .hero-icon-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── STATS BAND ── */
+  .stats-band {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 4rem;
+  }
+  .stats-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .stat-item {
+    text-align: center;
+    padding: 0 2rem;
+    border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.2rem;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-num.green { color: var(--ss-green-dark); }
+  .stat-num.yellow { color: var(--ss-yellow-dark); }
+  .stat-num.ink { color: var(--ink); }
+  .stat-label {
+    font-size: 0.73rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── MAIN CONTENT ── */
+  .project-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  /* Group block */
+  .screens-group { margin-bottom: 5.5rem; }
+
+  .screens-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .screens-label.green { color: var(--ss-green-dark); }
+  .screens-label.yellow { color: var(--ss-yellow-dark); }
+  .screens-label.ink { color: var(--ink-soft); }
+  .screens-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .screens-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    line-height: 1.7;
+  }
+
+  /* Phone grid */
+  .screens-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .col-2 { grid-template-columns: repeat(2, 1fr); }
+  .col-3 { grid-template-columns: repeat(3, 1fr); }
+  .col-4 { grid-template-columns: repeat(4, 1fr); }
+  .col-5 { grid-template-columns: repeat(5, 1fr); }
+
+  /* Phone frame */
+  .phone-wrap { display: flex; flex-direction: column; align-items: center; }
+
+  .phone-frame {
+    background: #1C1C1E;
+    border-radius: 38px;
+    padding: 10px;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.2),
+      0 24px 64px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.06);
+    position: relative;
+    width: 100%;
+  }
+  .phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 16px; left: 50%;
+    transform: translateX(-50%);
+    width: 80px; height: 20px;
+    background: #1C1C1E;
+    border-radius: 0 0 12px 12px;
+    z-index: 2;
+  }
+  .phone-screen {
+    border-radius: 30px;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    background: #f3f3f3;
+  }
+  .phone-screen img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .phone-caption {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  .phone-caption strong {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--ink);
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+  .phone-caption span {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* Feature callout */
+  .feature-callout {
+    background: var(--ss-dark);
+    border-radius: 20px;
+    padding: 3rem;
+    margin: 5rem 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-callout::before {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(34,197,94,0.15) 0%, transparent 70%);
+    top: -80px; right: -80px;
+    pointer-events: none;
+  }
+  .feature-item { position: relative; z-index: 1; }
+  .feature-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .feature-icon.green { background: rgba(34,197,94,0.15); }
+  .feature-icon.yellow { background: rgba(250,204,21,0.15); }
+  .feature-icon.white { background: rgba(255,255,255,0.08); }
+  .feature-item h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .feature-item p {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    font-weight: 300;
+    line-height: 1.65;
+  }
+
+  /* NOTE */
+  .note {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.83rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── CONTACT ── */
+  .contact-band {
+    background: var(--warm-paper);
+    border-top: 1px solid var(--border);
+    padding: 5.5rem 4rem;
+    text-align: center;
+  }
+  .contact-eyebrow { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .contact-eyebrow-line { width: 24px; height: 1px; background: var(--accent-mid); opacity: 0.6; }
+  .contact-eyebrow-text { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em; color: var(--accent-mid); text-transform: uppercase; }
+  .contact-band h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--ink); font-weight: 300; font-style: italic; margin-bottom: 0.75rem; }
+  .contact-band p { color: var(--muted); font-size: 0.9rem; font-weight: 300; margin-bottom: 2.5rem; }
+  .contact-btn {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.76rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+    border-radius: 1px; text-decoration: none;
+    transition: background 0.25s;
+  }
+  .contact-btn:hover { background: var(--accent-hover); }
+  .contact-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+  .contact-links a { font-size: 0.74rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .contact-links a:hover { color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--warm-white);
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer span { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em; }
+  .footer-links { display: flex; gap: 1.75rem; }
+  .footer-links a { font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.65s ease forwards;
+  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1000px) {
+    .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .stat-item { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+    .stat-item:nth-child(2n) { border-bottom: 1px solid var(--border); }
+    .stat-item:last-child, .stat-item:nth-last-child(2) { border-bottom: none; }
+    .feature-callout { grid-template-columns: 1fr 1fr; }
+
+    .col-5 { grid-template-columns: repeat(3, 1fr); }
+    .col-4 { grid-template-columns: repeat(2, 1fr); }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-icon-wrap { display: none; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 1.5rem 2rem; }
+    .hero { padding: 4.5rem 2rem 4rem; }
+    .stats-band { padding: 2.5rem 2rem; }
+    .col-3 { grid-template-columns: repeat(2, 1fr); }
+    .col-5 { grid-template-columns: repeat(2, 1fr); }
+    .contact-band { padding: 3.5rem 2rem; }
+    footer { padding: 1.5rem 2rem; }
+  }
+  @media (max-width: 480px) {
+    .nav-links { gap: 1.25rem; }
+    .col-2 { grid-template-columns: 1fr; max-width: 280px; margin: 0 auto; }
+    .col-3, .col-4, .col-5 { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">Wilgem <em>Mapalad</em></a>
+  <ul class="nav-links">
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow fade-up">
+        <div class="hero-eyebrow-line"></div>
+        <span class="hero-eyebrow-text">Capstone Project · Mobile App</span>
+      </div>
+      <h1 class="fade-up delay-1"><em>StudySync</em> —<br>Collaborative<br>Learning Platform</h1>
+      <p class="hero-desc fade-up delay-2">
+        A mobile study companion that brings learners together through shared flashcard sets, practice quiz sets, real-time chat rooms, live AI-powered quizzes, and progress tracking — all in one place.
+      </p>
+      <div class="hero-tags fade-up delay-3">
+        <span class="hero-tag green">UI/UX Design</span>
+        <span class="hero-tag green">Android</span>
+        <span class="hero-tag yellow">AI-Powered</span>
+        <span class="hero-tag yellow">Real-time Chat</span>
+        <span class="hero-tag green">Capstone</span>
+      </div>
+    </div>
+    <div class="hero-icon-wrap fade-up delay-4">
+      <img class="hero-icon-svg" src="studysync_ui/studysync_logo_w_name.png" alt="StudySync Icon" style="width: 200px; height: 200px;">
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num green">38</div>
+      <div class="stat-label">Screens Designed</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num yellow">5</div>
+      <div class="stat-label">Core Features</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num green">1</div>
+      <div class="stat-label">Unified Design System</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num ink">AI</div>
+      <div class="stat-label">Quiz Generation</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="project-section">
+
+  <!-- Feature callout -->
+  <div class="feature-callout">
+    <div class="feature-item">
+      <div class="feature-icon green">📚</div>
+      <h3>Flashcard Sets</h3>
+      <p>Create, edit, and study flashcard decks with progress tracking and visual completion indicators.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon green">📚</div>
+      <h3>Practice Quiz Sets</h3>
+      <p>Create, edit, and study practice quiz sets with progress tracking and visual completion indicators.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon yellow">⚡</div>
+      <h3>Live Quizzes</h3>
+      <p>AI-generated quizzes delivered in real-time through chat rooms. Students answer directly in the conversation.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon white">💬</div>
+      <h3>Chat Rooms</h3>
+      <p>Group study rooms with file sharing, member management, and shared learning sets.</p>
+    </div>
+  </div>
+
+  <!-- 1. Onboarding -->
+  <div class="screens-group">
+    <div class="screens-label green">Onboarding</div>
+    <p class="screens-desc">A clean splash, login with Google support, and a profile setup flow that gets users into the app quickly.</p>
+    <div class="screens-grid col-4">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Splash.png" alt="Splash screen"></div>
+        </div>
+        <div class="phone-caption"><strong>Splash</strong><span>App launch</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Login.png" alt="Login screen"></div>
+        </div>
+        <div class="phone-caption"><strong>Login</strong><span>Email or Google</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Signup.png" alt="Signup screen"></div>
+        </div>
+        <div class="phone-caption"><strong>Sign Up</strong><span>New account</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Set Up Profile.png" alt="Set Up Profile"></div>
+        </div>
+        <div class="phone-caption"><strong>Set Up Profile</strong><span>Initial profile</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Home & Navigation -->
+  <div class="screens-group">
+    <div class="screens-label green">Home &amp; Navigation</div>
+    <p class="screens-desc">The home dashboard surfaces quick actions, continue-learning cards with progress rings, and navigation to all core areas.</p>
+    <div class="screens-grid col-3">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Fragment Home.png" alt="Home"></div>
+        </div>
+        <div class="phone-caption"><strong>Home</strong><span>Dashboard overview</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Notification.png" alt="Notifications"></div>
+        </div>
+        <div class="phone-caption"><strong>Notifications</strong><span>Activity feed</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Fragment Set.png" alt="My Sets"></div>
+        </div>
+        <div class="phone-caption"><strong>My Sets</strong><span>All flashcard sets</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Set Fragments -->
+  <div class="screens-group">
+    <div class="screens-label green">Set Fragments</div>
+    <p class="screens-desc">Two main fragments for managing sets: one for flashcard sets, and another for practice quiz sets.</p>
+    <div class="screens-grid col-2" style="max-width: 700px; margin: 0 auto;"> 
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Flashcard Set.png" alt="Flashcard Set"></div>
+        </div>
+        <div class="phone-caption"><strong>Flashcard Set</strong><span>Manage flashcards</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Quiz Set.png" alt="Quiz Set"></div>
+        </div>
+        <div class="phone-caption"><strong>Quiz Set</strong><span>Manage quizzes</span></div>
+      </div>
+    </div>
+  </div>
+
+    <!-- 3. Set Generator -->
+  <div class="screens-group">
+    <div class="screens-label green">Set Generator</div>
+    <p class="screens-desc">Create and manage your own flashcard sets and practice quiz sets with customizable content and organization.</p>
+    <div class="screens-grid col-4">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Create Option.png" alt="Create Option"></div>
+        </div>
+        <div class="phone-caption"><strong>Create</strong><span>Option</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Create a Prompt.png" alt="Create a Prompt"></div>
+        </div>
+        <div class="phone-caption"><strong>Prompt</strong><span>Creation</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Create Flashcard.png" alt="Create Flashcard"></div>
+        </div>
+        <div class="phone-caption"><strong>Manually</strong><span>Create Flashcard</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Create Quiz.png" alt="Create Quiz"></div>
+        </div>
+        <div class="phone-caption"><strong>Manually</strong><span>Create Quiz</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Flashcards -->
+  <div class="screens-group">
+    <div class="screens-label green">Flashcards</div>
+    <p class="screens-desc">Full flashcard lifecycle — create, view, edit, preview, and track learning progress with visual indicators.</p>
+    <div class="screens-grid col-3">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Create Flashcard.png" alt="Create Flashcard"></div>
+        </div>
+        <div class="phone-caption"><strong>Create</strong><span>New flashcard</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/View Flashcard.png" alt="View Flashcard"></div>
+        </div>
+        <div class="phone-caption"><strong>View</strong><span>Card detail</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Edit Flashcard.png" alt="Edit Flashcard"></div>
+        </div>
+        <div class="phone-caption"><strong>Edit</strong><span>Modify card</span></div>
+      </div>
+    </div>
+    <div class="screens-grid col-2" style="max-width: 700px; margin: 1.5rem auto 0;">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Flashcard Preview.png" alt="Flashcard Preview"></div>
+        </div>
+        <div class="phone-caption"><strong>Preview</strong><span>Study mode</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Flashcard Progress.png" alt="Flashcard Progress"></div>
+        </div>
+        <div class="phone-caption"><strong>Progress</strong><span>Learning stats</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Quiz -->
+  <div class="screens-group">
+    <div class="screens-label yellow">Practice Quizzes</div>
+    <p class="screens-desc">Full quiz lifecycle — create, view, edit, preview, and track performance with visual indicators.</p>
+    <div class="screens-grid col-3">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Create Quiz.png" alt="Create Quiz"></div>
+        </div>
+        <div class="phone-caption"><strong>Create Quiz</strong><span>Manual setup</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/View Quiz.png" alt="View Quiz"></div>
+        </div>
+        <div class="phone-caption"><strong>View Quiz</strong><span>Quiz detail</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Edit Quiz.png" alt="Edit Quiz"></div>
+        </div>
+        <div class="phone-caption"><strong>Edit Quiz</strong><span>Modify questions</span></div>
+      </div>
+    </div>
+    <div class="screens-grid col-2" style="max-width: 700px; margin: 1.5rem auto 0;">
+        <div class="phone-wrap">
+            <div class="phone-frame">
+            <div class="phone-screen"><img src="studysync_ui/Quiz Preview.png" alt="Quiz Preview"></div>
+            </div>
+            <div class="phone-caption"><strong>Preview</strong><span>Take quiz</span></div>
+        </div>
+        <div class="phone-wrap">
+            <div class="phone-frame">
+            <div class="phone-screen"><img src="studysync_ui/Quiz Progress.png" alt="Quiz Progress"></div>
+            </div>
+            <div class="phone-caption"><strong>Progress</strong><span>Quiz results</span></div>
+        </div>
+    </div>
+  </div>
+
+  <!-- 6. Live Quiz in Chat -->
+  <div class="screens-group">
+    <div class="screens-label yellow">Live Quiz Sessions</div>
+    <p class="screens-desc">Real-time quiz delivery through chat — questions appear as messages with a live progress bar, and students answer directly in the conversation.</p>
+    <div class="screens-grid col-3">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Generate Live Quiz.png" alt="Generate Live Quiz"></div>
+        </div>
+        <div class="phone-caption"><strong>Generate</strong><span>Live Quiz Options</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Live Quiz Sets.png" alt="Live Quiz Sets"></div>
+        </div>
+        <div class="phone-caption"><strong>Quiz Sets</strong><span>Choose a Set</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Create a Prompt.png" alt="Create a Prompt"></div>
+        </div>
+        <div class="phone-caption"><strong>Create a Prompt</strong><span>Set up quiz</span></div>
+      </div>
+    </div>
+    <div class="screens-grid col-3" style="margin-top: 1.5rem;">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Existing Live Quizzes.png" alt="Existing Live Quizzes"></div>
+        </div>
+        <div class="phone-caption"><strong>Existing Quizzes</strong><span>Join a session</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Live Quiz Questions Preview.png" alt="Live Quiz Questions Preview"></div>
+        </div>
+        <div class="phone-caption"><strong>Questions</strong><span>Preview before start</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Live Quiz.png" alt="Live Quiz"></div>
+        </div>
+        <div class="phone-caption"><strong>Live Quiz</strong><span>Active session</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Chat Rooms -->
+  <div class="screens-group">
+    <div class="screens-label ink">Chat Rooms</div>
+    <p class="screens-desc">Collaborative study spaces with real-time messaging, file sharing, image previews, member management, and shared learning sets.</p>
+    <div class="screens-grid col-3">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Fragment Chatroom.png" alt="Chatroom list"></div>
+        </div>
+        <div class="phone-caption"><strong>Rooms List</strong><span>All chat rooms</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Add Chat Room.png" alt="Add Chat Room"></div>
+        </div>
+        <div class="phone-caption"><strong>Add Room</strong><span>Create group</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/View Chat Room.png" alt="View Chat Room"></div>
+        </div>
+        <div class="phone-caption"><strong>View Room</strong><span>Group chat</span></div>
+      </div>
+    </div>
+    <div class="screens-grid col-3" style="margin-top: 1.5rem;">
+        <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Edit Chat Room.png" alt="Edit Chat Room"></div>
+        </div>
+        <div class="phone-caption"><strong>Edit Room</strong><span>Room settings</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Add Members.png" alt="Add Members"></div>
+        </div>
+        <div class="phone-caption"><strong>Add Members</strong><span>Invite users</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/See Members.png" alt="See Members"></div>
+        </div>
+        <div class="phone-caption"><strong>See Members</strong><span>Member list</span></div>
+      </div>
+    </div>
+    <div class="screens-grid col-3" style="margin-top: 1.5rem;">
+        <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Shared Sets.png" alt="Shared Sets"></div>
+        </div>
+        <div class="phone-caption"><strong>Shared Sets</strong><span>Group study sets</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Files.png" alt="Files"></div>
+        </div>
+        <div class="phone-caption"><strong>Files</strong><span>Shared files</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Image Preview.png" alt="Image Preview"></div>
+        </div>
+        <div class="phone-caption"><strong>Image Preview</strong><span>Media viewer</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Profile & Settings -->
+  <div class="screens-group">
+    <div class="screens-label ink">Profile &amp; Settings</div>
+    <p class="screens-desc">Complete account management — update display name, username, email, and password with a clean settings flow.</p>
+    <div class="screens-grid col-3">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Fragment User Profile.png" alt="Fragment User Profile"></div>
+        </div>
+        <div class="phone-caption"><strong>View</strong><span>Profile</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/User Profile Settings.png" alt="User Profile Settings"></div>
+        </div>
+        <div class="phone-caption"><strong>Profile Settings</strong><span>Manage your profile</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Change Username.png" alt="Change Username"></div>
+        </div>
+        <div class="phone-caption"><strong>Username</strong><span>Update Username</span></div>
+      </div>
+    </div>
+     <div class="screens-grid col-3" style="margin-top: 1.5rem;">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Change Full Name.png" alt="Change Full Name"></div>
+        </div>
+        <div class="phone-caption"><strong>Full Name</strong><span>Update Name</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Change Email.png" alt="Change Email"></div>
+        </div>
+        <div class="phone-caption"><strong>Email</strong><span>Update address</span></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-screen"><img src="studysync_ui/Change Password.png" alt="Change Password"></div>
+        </div>
+        <div class="phone-caption"><strong>Password</strong><span>Update credentials</span></div>
+      </div>
+  </div>
+
+</div>
+</div><!-- /project-section -->
+
+<div class="note">
+  StudySync &nbsp;·&nbsp; Capstone Project &nbsp;·&nbsp; UI/UX Design by Wilgem T. Mapalad
+</div>
+
+<!-- CONTACT -->
+<div class="contact-band" id="contact">
+  <div class="contact-eyebrow">
+    <div class="contact-eyebrow-line"></div>
+    <span class="contact-eyebrow-text">Let's connect</span>
+    <div class="contact-eyebrow-line"></div>
+  </div>
+  <h2>Let's work together.</h2>
+  <p>Have a project or opportunity in mind? I'd love to hear about it.</p>
+  <a class="contact-btn" href="mailto:wilgemtmapalad@gmail.com">Say hello →</a>
+  <div class="contact-links">
+    <a href="tel:+639157620857">+63 915 762 0857</a>
+    <a href="mailto:wilgemtmapalad@gmail.com">wilgemtmapalad@gmail.com</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Wilgem T. Mapalad</span>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/wilgem-mapalad-4582813b1/">LinkedIn</a>
+    <a href="https://WilgemMapalad.github.io">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>

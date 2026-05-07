@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wilgem Mapalad — UI/UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --warm-white: #FDFAF7;
+    --warm-paper: #F5EFE8;
+    --ink: #2A2420;
+    --ink-soft: #5C4F47;
+    --muted: #9A8A80;
+    --accent: #B5453A;
+    --accent-light: #FAF0EE;
+    --accent-mid: #D4706A;
+    --accent-hover: #9C3530;
+    --border: rgba(42,36,32,0.08);
+    --border-accent: rgba(181,69,58,0.18);
+    --card-bg: #FFFCFA;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 4rem;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+  }
+  .nav-logo em { font-style: italic; color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* SECTIONS */
+  .section { padding: 2.25rem 4rem; max-width: 1200px; margin: 0 auto; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; letter-spacing: 0.01em; }
+  .section-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .section-link { font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+  .section-link:hover { color: var(--accent); }
+
+  /* PROJECTS GRID */
+  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+  .projects-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+  .projects-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(42,36,32,0.07); border-color: var(--border-accent); }
+  .projects-card.large { grid-column: 1 / -1; }
+  .projects-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    position: relative;
+    overflow: hidden;
+    gap: 7px;
+  }
+  .projects-thumb img {
+    height: 90%;
+    width: auto;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .thumb-a { background: #F5EDEB; color: rgba(181,69,58,0.2); }
+  .thumb-b { background: #EDE8E5; color: rgba(42,36,32,0.12); }
+  .thumb-c { background: #EAE8F0; color: rgba(42,36,32,0.1); }
+  .projects-meta { padding: 1.25rem 1.5rem 1.35rem; display: flex; justify-content: space-between; align-items: flex-start; }
+  .projects-num { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-style: italic; color: var(--accent-mid); margin-bottom: 0.2rem; display: block; }
+  .projects-name { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.2rem; letter-spacing: 0.01em; }
+  .projects-type { font-size: 0.74rem; color: var(--muted); font-weight: 300; letter-spacing: 0.06em; }
+  .projects-arrow { font-size: 1rem; color: var(--accent-mid); margin-top: 4px; transition: color 0.2s; }
+  .projects-card:hover .projects-arrow { color: var(--accent); }
+
+  /* CONTACT */
+  .contact-band {
+    background: var(--warm-paper);
+    border-top: 1px solid var(--border);
+    padding: 5.5rem 4rem;
+    text-align: center;
+  }
+  .contact-eyebrow { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .contact-eyebrow-line { width: 24px; height: 1px; background: var(--accent-mid); opacity: 0.6; }
+  .contact-eyebrow-text { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em; color: var(--accent-mid); text-transform: uppercase; }
+  .contact-band h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--ink); font-weight: 300; font-style: italic; margin-bottom: 0.75rem; }
+  .contact-band p { color: var(--muted); font-size: 0.9rem; font-weight: 300; margin-bottom: 2.5rem; }
+  .contact-btn {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.76rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+    border-radius: 1px; text-decoration: none;
+    transition: background 0.25s;
+  }
+  .contact-btn:hover { background: var(--accent-hover); }
+  .contact-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+  .contact-links a { font-size: 0.74rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .contact-links a:hover { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    background: var(--warm-white);
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer span { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em; }
+  .footer-links { display: flex; gap: 1.75rem; }
+  .footer-links a { font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-label   { animation: fadeUp 0.5s ease both; }
+  .hero-title   { animation: fadeUp 0.6s 0.08s ease both; }
+  .hero-sub     { animation: fadeUp 0.6s 0.18s ease both; }
+  .hero-actions { animation: fadeUp 0.6s 0.28s ease both; }
+  .hero-visual  { animation: fadeUp 0.7s 0.12s ease both; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1.5rem 2rem; }
+    .section { padding: 4rem 2rem 3rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .projects-card.large { grid-column: auto; }
+    .contact-band { padding: 3.5rem 2rem; }
+    footer { padding: 1.5rem 2rem; }
+  }
+  @media (max-width: 600px) {
+    .nav-links { gap: 1.25rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 2.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">Wilgem <em>Mapalad</em></a>
+  <ul class="nav-links">
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+
+<!-- PROJECT -->
+<div class="section" id="projects">
+  <div class="section-header">
+    <h2 class="section-title">More <em>Academic Projects</em></h2>
+  </div>
+  <div class="projects-grid">
+    <a class="projects-card large" href="studysync.html">
+      <div class="projects-thumb thumb-a">
+        <img src="studysync_ui/Fragment Home.png" alt="StudySync Home">
+        <img src="studysync_ui/Fragment Set.png" alt="StudySync Set">
+        <img src="studysync_ui/Fragment Chatroom.png" alt="StudySync Chatroom">
+        <img src="studysync_ui/Fragment User Profile.png" alt="StudySync Profile">
+      </div>
+      <div class="projects-meta">
+        <div>
+          <span class="projects-num">01</span>
+          <div class="projects-name">StudySync — Android Flashcard & Quiz App</div>
+          <div class="projects-type">UI Design · Android Development · Java</div>
+        </div>
+        <div class="projects-arrow">↗</div>
+      </div>
+    </a>
+    <a class="projects-card" href="luckyhotel.html">
+      <div class="projects-thumb thumb-b">
+        <img src="luckyhotel_ui/home.png" alt="Lucky Hotel Home">
+      </div>
+      <div class="projects-meta">
+        <div>
+          <span class="projects-num">02</span>
+          <div class="projects-name">Lucky Hotel - Booking System</div>
+          <div class="projects-type">UI Design · Web Design · PHP</div>
+        </div>
+        <div class="projects-arrow">↗</div>
+      </div>
+    </a>
+    <a class="projects-card" href="phileats.html">
+      <div class="projects-thumb thumb-c">
+        <img src="phileats_ui/Overview.png" alt="PhilEats Overview">
+        <img src="phileats_ui/Add Recipe.png" alt="PhilEats Add Recipe">
+        <img src="phileats_ui/Luzon.png" alt="PhilEats Luzon">
+      </div>
+      <div class="projects-meta">
+        <div>
+          <span class="projects-num">03</span>
+          <div class="projects-name">PhilEats — Delicacy Foods in the Philippines</div>
+          <div class="projects-type">UI Design · Android Studio</div>
+        </div>
+        <div class="projects-arrow">↗</div>
+      </div>
+    </a>
+    <a class="projects-card large" href="photogallery.html">
+      <div class="projects-thumb thumb-a">
+        <img src="photogallery_ui/nature_gallery.png" alt="Photo Gallery Nature">
+      </div>
+      <div class="projects-meta">
+        <div>
+          <span class="projects-num">01</span>
+          <div class="projects-name">Photo Gallery — Visual Scenario</div>
+          <div class="projects-type">UI Design · Photography</div>
+        </div>
+        <div class="projects-arrow">↗</div>
+      </div>
+    </a>
+    <a class="projects-card" href="lyricsviewer.html">
+      <div class="projects-thumb thumb-b">
+        <img src="lyricsviewer_ui/home.png" alt="Lyrics Viewer Home">
+        <img src="lyricsviewer_ui/bituin.png" alt="Lyrics Viewer bituin">
+        <img src="lyricsviewer_ui/dalangin.png" alt="Lyrics Viewer dalangin">
+      </div>
+      <div class="projects-meta">
+        <div>
+          <span class="projects-num">02</span>
+          <div class="projects-name">Lyrics Viewer - Music Lyrics App</div>
+          <div class="projects-type">UI Design · Simple Activity</div>
+        </div>
+        <div class="projects-arrow">↗</div>
+      </div>
+    </a>
+    <a class="projects-card" href="bmicalculator.html">
+      <div class="projects-thumb thumb-c">
+        <img src="bmicalculator_ui/input.png" alt="BMI Calculator input">
+        <img src="bmicalculator_ui/input_normal.png" alt="BMI Calculator input normal">
+        <img src="bmicalculator_ui/normal.png" alt="BMI Calculator normal">
+      </div>
+      <div class="projects-meta">
+        <div>
+          <span class="projects-num">03</span>
+          <div class="projects-name">BMI Calculator - Health App</div>
+          <div class="projects-type">UI Design · Simple Activity</div>
+        </div>
+        <div class="projects-arrow">↗</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-band" id="contact">
+  <div class="contact-eyebrow">
+    <div class="contact-eyebrow-line"></div>
+    <span class="contact-eyebrow-text">Let's connect</span>
+    <div class="contact-eyebrow-line"></div>
+  </div>
+  <h2>Let's work together.</h2>
+  <p>Have a project or opportunity in mind? I'd love to hear about it.</p>
+  <a class="contact-btn" href="mailto:wilgemtmapalad@gmail.com">Say hello →</a>
+  <div class="contact-links">
+    <a href="tel:+639157620857">+63 915 762 0857</a>
+    <a href="mailto:wilgemtmapalad@gmail.com">wilgemtmapalad@gmail.com</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Wilgem T. Mapalad</span>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/wilgem-mapalad-4582813b1/">LinkedIn</a>
+    <a href="https://WilgemMapalad.github.io">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>

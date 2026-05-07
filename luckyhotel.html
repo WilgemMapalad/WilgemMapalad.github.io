@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucky Hotel — Website Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Raleway:wght@200;300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+    --rose: #f4a0a0;
+    --rose-light: #fce8e8;
+    --rose-mid: #e88080;
+    --rose-dark: #c05555;
+    --blush: #fff0f0;
+    --warm-white: #FDFAF7;
+    --warm-paper: #F5EFE8;
+    --ink: #2A2420;
+    --ink-soft: #5C4F47;
+    --muted: #9A8A80;
+    --accent: #B5453A;
+    --accent-light: #FAF0EE;
+    --accent-mid: #D4706A;
+    --accent-hover: #9C3530;
+    --border: rgba(42,36,32,0.08);
+    --border-accent: rgba(181,69,58,0.18);
+    --card-bg: #FFFCFA;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Raleway', sans-serif;
+  background: var(--warm-white);
+  color: var(--ink);
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 8%,  rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 55%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 75%, rgba(255,255,255,0.5) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.75rem 4rem;
+  background: var(--warm-white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+}
+.nav-logo em { font-style: italic; color: var(--accent); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.25s;
+}
+.nav-links a:hover { color: var(--accent); }
+
+/* HERO */
+.hero {
+  position: relative; min-height: 92vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 4rem 2rem;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(244,160,160,0.28) 0%, transparent 70%);
+  z-index: 1;
+}
+.hero h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-weight: 600; line-height: 1.05; letter-spacing: 0.06em; margin-bottom: 0.6rem;
+  background: linear-gradient(135deg, var(--ink) 0%, var(--accent-mid) 50%, var(--accent) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-desc {
+  max-width: 560px; font-size: 0.95rem; color: var(--ink-soft); line-height: 1.85; margin-bottom: 3rem;
+}
+.hero-stats { display: flex; gap: 3rem; align-items: center; justify-content: center; flex-wrap: wrap; }
+.stat { text-align: center; }
+.stat-num {
+  font-family: 'Cinzel', serif; font-size: 2rem; font-weight: 600;
+  color: var(--accent); line-height: 1; margin-bottom: 0.3rem;
+}
+.stat-label { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.hero-divider { width: 1px; height: 40px; background: var(--border-accent); }
+
+/* SECTIONS */
+.section { position: relative; z-index: 1; padding: 4rem 2rem; max-width: 1100px; margin: 0 auto; }
+.section + .section { padding-top: 0; }
+.section-sep {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-accent), var(--rose-mid), var(--border-accent), transparent);
+  margin: 0 2rem; position: relative; z-index: 1;
+  opacity: 0.5;
+}
+.section-header { margin-bottom: 3rem; }
+.section-eyebrow {
+  font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--accent-mid); margin-bottom: 0.8rem; font-weight: 500;
+}
+.section-header h2 {
+  font-family: 'Cinzel', serif; font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 400; letter-spacing: 0.05em; color: var(--ink); line-height: 1.2; margin-bottom: 1rem;
+}
+.section-header p { font-size: 0.92rem; color: var(--ink-soft); max-width: 620px; line-height: 1.8; }
+
+/* BROWSER MOCKUP */
+.browser {
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--border-accent);
+  box-shadow: 0 0 0 1px rgba(42,36,32,0.04), 0 4px 24px rgba(181,69,58,0.08), 0 10px 40px rgba(42,36,32,0.08);
+}
+.browser-bar {
+  background: var(--warm-paper); border-bottom: 1px solid var(--border);
+  padding: 10px 14px; display: flex; align-items: center; gap: 10px;
+}
+.browser-dots { display: flex; gap: 6px; }
+.dot { width: 11px; height: 11px; border-radius: 50%; }
+.dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+.browser-url {
+  flex: 1; background: rgba(42,36,32,0.04);
+  border: 1px solid var(--border); border-radius: 5px;
+  padding: 4px 12px; font-size: 0.73rem; color: var(--muted); margin: 0 6px;
+}
+.browser-screen img { display: block; width: 100%; height: auto; }
+
+/* CHIPS */
+.chips { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem; }
+.chip {
+  font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;
+  padding: 0.35rem 0.85rem; border-radius: 2px;
+  border: 1px solid var(--border-accent); color: var(--ink-soft); background: var(--accent-light);
+}
+.chip.purple {
+  border-color: rgba(192,85,85,0.3); color: var(--accent); background: var(--rose-light);
+}
+
+/* INFO GRID */
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 2rem; }
+.info-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.4rem;
+  box-shadow: 0 2px 8px rgba(42,36,32,0.04);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.info-card:hover {
+  box-shadow: 0 4px 20px rgba(181,69,58,0.1);
+  transform: translateY(-2px);
+}
+.info-card-icon { font-size: 1.4rem; margin-bottom: 0.7rem; }
+.info-card h4 {
+  font-family: 'Cinzel', serif; font-size: 0.85rem;
+  letter-spacing: 0.08em; color: var(--accent); margin-bottom: 0.5rem;
+}
+.info-card p { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.7; }
+
+/* NOTE */
+.note {
+  position: relative; z-index: 1; text-align: center; padding: 3rem 2rem;
+  border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--muted); letter-spacing: 0.08em;
+}
+.note span { color: var(--accent); }
+
+/* CONTACT */
+.contact-band {
+  background: var(--warm-paper);
+  border-top: 1px solid var(--border);
+  padding: 5.5rem 4rem;
+  text-align: center;
+}
+.contact-eyebrow { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+.contact-eyebrow-line { width: 24px; height: 1px; background: var(--accent-mid); opacity: 0.6; }
+.contact-eyebrow-text { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em; color: var(--accent-mid); text-transform: uppercase; }
+.contact-band h2 {
+  font-family: 'Cormorant Garamond', serif; font-size: 3rem;
+  color: var(--ink); font-weight: 300; font-style: italic; margin-bottom: 0.75rem;
+}
+.contact-band p { color: var(--muted); font-size: 0.9rem; font-weight: 300; margin-bottom: 2.5rem; }
+.contact-btn {
+  display: inline-block;
+  padding: 0.9rem 2.5rem;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.76rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+  border-radius: 1px; text-decoration: none;
+  transition: background 0.25s;
+}
+.contact-btn:hover { background: var(--accent-hover); }
+.contact-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+.contact-links a { font-size: 0.74rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+.contact-links a:hover { color: var(--accent); }
+
+/* FOOTER */
+footer {
+  background: var(--warm-white);
+  padding: 1.5rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+footer span { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em; }
+.footer-links { display: flex; gap: 1.75rem; }
+.footer-links a { font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent); }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 1.5rem 2rem; }
+  .contact-band { padding: 3.5rem 2rem; }
+  footer { padding: 1.5rem 2rem; }
+}
+@media (max-width: 600px) {
+  .nav-links { gap: 1.25rem; }
+  .info-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">Wilgem <em>Mapalad</em></a>
+  <ul class="nav-links">
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="top">
+  <h1>Lucky Hotel</h1>
+  <p class="hero-desc">A full-featured hotel management web application with user authentication, room browsing, real-time booking, and booking history — all wrapped in a stunning dark night-city aesthetic.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">Pages</div></div>
+    <div class="hero-divider"></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Room Types</div></div>
+    <div class="hero-divider"></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Services</div></div>
+    <div class="hero-divider"></div>
+    <div class="stat"><div class="stat-num">PHP</div><div class="stat-label">Backend</div></div>
+  </div>
+</section>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-eyebrow">About the Project</div>
+    <h2>What Is Lucky Hotel?</h2>
+    <p>Lucky Hotel is a PHP-based hotel reservation system set in the City of Pines — Baguio. It lets guests browse rooms, make bookings, and track their reservation history, all within a sleek, immersive dark interface inspired by a night-time city skyline.</p>
+  </div>
+  <div class="info-grid">
+    <div class="info-card"><div class="info-card-icon">🔐</div><h4>Authentication</h4><p>Secure sign-in and sign-up system. Only registered guests can browse rooms and make reservations.</p></div>
+    <div class="info-card"><div class="info-card-icon">🏨</div><h4>Room Browsing</h4><p>Four room types — Single, Premium, Deluxe, and Family — each with photos, descriptions, and nightly rates.</p></div>
+    <div class="info-card"><div class="info-card-icon">📅</div><h4>Live Booking</h4><p>Select dates, guests, room count and type. The total amount auto-calculates before you confirm.</p></div>
+    <div class="info-card"><div class="info-card-icon">📋</div><h4>Booking History</h4><p>View all past reservations in a table. Add new entries or delete existing ones and print the history.</p></div>
+  </div>
+</div>
+
+<div class="section-sep"></div>
+
+<div class="section" id="login">
+  <div class="section-header">
+    <div class="section-eyebrow">Page 1 of 6</div>
+    <h2>Login & Sign Up</h2>
+    <p>The entry point of the app. A centered glassmorphism card sits against a full-screen night-city illustration featuring the iconic sail-shaped tower. Guests sign in with email and password, or create a new account via the Sign Up link.</p>
+  </div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      <div class="browser-url">luckyhotel.com / login.php</div>
+    </div>
+    <div class="browser-screen"><img src="luckyhotel_ui/login.png" alt="Login page"></div>
+  </div>
+  <div class="chips">
+    <span class="chip">Email + Password</span>
+    <span class="chip">Remember Me</span>
+    <span class="chip">Sign Up Link</span>
+    <span class="chip purple">Glassmorphism Card</span>
+    <span class="chip purple">Night City Background</span>
+  </div>
+</div>
+
+<div class="section-sep"></div>
+
+<div class="section" id="home">
+  <div class="section-header">
+    <div class="section-eyebrow">Page 2 of 6</div>
+    <h2>Home — Room Slideshow</h2>
+    <p>The homepage greets logged-in guests with a centered room image slideshow featuring navigation arrows and dot indicators. Each slide shows the room name, a full description, and the nightly price — all set atop the animated night-city backdrop.</p>
+  </div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      <div class="browser-url">luckyhotel.com / home.php</div>
+    </div>
+    <div class="browser-screen"><img src="luckyhotel_ui/home.png" alt="Home page"></div>
+  </div>
+  <div class="chips">
+    <span class="chip">Image Slideshow</span>
+    <span class="chip">Prev / Next Arrows</span>
+    <span class="chip">Dot Indicators</span>
+    <span class="chip">Room Descriptions</span>
+    <span class="chip purple">4 Room Types</span>
+    <span class="chip purple">Nightly Pricing</span>
+  </div>
+</div>
+
+<div class="section-sep"></div>
+
+<div class="section" id="booking">
+  <div class="section-header">
+    <div class="section-eyebrow">Page 3 of 6</div>
+    <h2>Booking Form</h2>
+    <p>A streamlined booking bar overlaid on the city background. Guests select check-in/out dates, adults, children, number of rooms, and room type. The Amount field auto-calculates based on room type and quantity. A single "Book Now" button submits the reservation to the MySQL database.</p>
+  </div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      <div class="browser-url">luckyhotel.com / home.php — booking form</div>
+    </div>
+    <div class="browser-screen"><img src="luckyhotel_ui/booking.png" alt="Booking form"></div>
+  </div>
+  <div class="chips">
+    <span class="chip">Check-in / Check-out Dates</span>
+    <span class="chip">Adults & Children</span>
+    <span class="chip">Number of Rooms</span>
+    <span class="chip">Room Type Select</span>
+    <span class="chip purple">Auto-calculated Amount</span>
+    <span class="chip purple">PHP + MySQL</span>
+  </div>
+</div>
+
+<div class="section-sep"></div>
+
+<div class="section" id="rooms">
+  <div class="section-header">
+    <div class="section-eyebrow">Page 4 of 6</div>
+    <h2>Rooms Page</h2>
+    <p>An alternating two-column layout pairs each room photo with its name, full description, nightly rate, and a "Book Now" button that links directly to the booking form. Four room types are listed — Single (₱25,000), Premium (₱30,000), Deluxe (₱35,000), and Family (₱25,000).</p>
+  </div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      <div class="browser-url">luckyhotel.com / ROOMS.php</div>
+    </div>
+    <div class="browser-screen"><img src="luckyhotel_ui/rooms.png" alt="Rooms page"></div>
+  </div>
+  <div class="chips">
+    <span class="chip">Single — ₱25,000/night</span>
+    <span class="chip">Premium — ₱30,000/night</span>
+    <span class="chip">Deluxe — ₱35,000/night</span>
+    <span class="chip">Family — ₱25,000/night</span>
+    <span class="chip purple">Book Now per Room</span>
+    <span class="chip purple">Alternating Layout</span>
+  </div>
+</div>
+
+<div class="section-sep"></div>
+
+<div class="section" id="services">
+  <div class="section-header">
+    <div class="section-eyebrow">Page 5 of 6</div>
+    <h2>Services</h2>
+    <p>Four hotel services are displayed in a 2×2 photo grid — Food Service, Refresh (infinity pool), Housekeeping, and Security. Each card shows a vivid real photo with the service name overlaid, giving guests a quick visual overview of what Lucky Hotel offers beyond accommodation.</p>
+  </div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      <div class="browser-url">luckyhotel.com / SERVICES.php</div>
+    </div>
+    <div class="browser-screen"><img src="luckyhotel_ui/services.png" alt="Services page"></div>
+  </div>
+  <div class="chips">
+    <span class="chip">🍕 Food Service</span>
+    <span class="chip">🏊 Refresh / Pool</span>
+    <span class="chip">🛎 Housekeeping</span>
+    <span class="chip">🔒 Security</span>
+    <span class="chip purple">2×2 Photo Grid</span>
+  </div>
+</div>
+
+<div class="section-sep"></div>
+
+<div class="section" id="history">
+  <div class="section-header">
+    <div class="section-eyebrow">Page 6 of 6</div>
+    <h2>Booking History</h2>
+    <p>A full-width data table displays all reservations — check-in/out dates, guest counts, room type, and total amount. Each row has Add and Delete action buttons for managing entries. A "Print Booking History" button lets guests export their records. The aurora borealis gradient gives this page a distinct atmospheric mood.</p>
+  </div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      <div class="browser-url">luckyhotel.com / historybooking.php</div>
+    </div>
+    <div class="browser-screen"><img src="luckyhotel_ui/booking_history.png" alt="Booking history"></div>
+  </div>
+  <div class="chips">
+    <span class="chip">Full Reservation Table</span>
+    <span class="chip">Add / Delete Actions</span>
+    <span class="chip">Print History</span>
+    <span class="chip purple">Aurora Background</span>
+    <span class="chip purple">MySQL CRUD</span>
+  </div>
+</div>
+
+<div class="note">
+  <div style="margin-bottom:0.5rem;font-family:'Cinzel',serif;font-size:1rem;letter-spacing:0.15em;color:var(--ink);">Lucky Hotel</div>
+  Hotel Reservation System &nbsp;·&nbsp; Wilgem T. Mapalad &nbsp;·&nbsp; Built with <span>PHP</span>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-band" id="contact">
+  <div class="contact-eyebrow">
+    <div class="contact-eyebrow-line"></div>
+    <span class="contact-eyebrow-text">Let's connect</span>
+    <div class="contact-eyebrow-line"></div>
+  </div>
+  <h2>Let's work together.</h2>
+  <p>Have a project or opportunity in mind? I'd love to hear about it.</p>
+  <a class="contact-btn" href="mailto:wilgemtmapalad@gmail.com">Say hello →</a>
+  <div class="contact-links">
+    <a href="tel:+639157620857">+63 915 762 0857</a>
+    <a href="mailto:wilgemtmapalad@gmail.com">wilgemtmapalad@gmail.com</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Wilgem T. Mapalad</span>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/wilgem-mapalad-4582813b1/">LinkedIn</a>
+    <a href="https://WilgemMapalad.github.io">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lyrics Viewer – Sugarcane</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --warm-white: #FDFAF7;
+    --warm-paper: #F5EFE8;
+    --ink: #2A2420;
+    --ink-soft: #5C4F47;
+    --muted: #9A8A80;
+    --accent: #B5453A;
+    --accent-light: #FAF0EE;
+    --accent-mid: #D4706A;
+    --border: rgba(42,36,32,0.08);
+    --border-accent: rgba(181,69,58,0.18);
+    --card-bg: #FFFCFA;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 4rem;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+  }
+  .nav-logo em { font-style: italic; color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* PAGE HEADER */
+  .page-header { text-align:center; max-width:600px; margin-bottom:20px; margin-left:auto; margin-right:auto; margin-top:20px; }
+  .badge {
+    display:inline-block; background:var(--accent); color:#fff;
+    font-size:0.68rem; font-weight:500; letter-spacing:0.13em;
+    text-transform:uppercase; padding:3px 12px; border-radius:20px; margin-bottom:12px;
+  }
+  .page-header h1 {
+    font-family:'Playfair Display',serif; font-size:2.1rem; font-weight:700;
+    color:var(--ink); letter-spacing:-0.01em; margin-bottom:10px;
+  }
+  .page-header p {
+    font-size:1.05rem; color:var(--ink-soft); line-height:1.7; font-style:italic;
+  }
+
+  /* PHONES ROW */
+  .phones-row {
+    display:flex; gap:36px; align-items:flex-start;
+    flex-wrap:wrap; justify-content:center;
+  }
+  .phone-col { display:flex; flex-direction:column; align-items:center; gap:12px; }
+  .phone-col-label {
+    font-family:'Playfair Display',serif; font-size:0.68rem;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-soft);
+  }
+
+  /* PHONE SHELL */
+  .phone {
+    width:310px; height:640px;
+    border-radius:46px;
+    box-shadow:
+      0 0 0 9px #1e1a18,
+      0 0 0 11px #302a27,
+      0 30px 80px rgba(30,20,15,0.4),
+      0 8px 24px rgba(30,20,15,0.2);
+    overflow:hidden; display:flex; flex-direction:column;
+    flex-shrink:0; position:relative; background:#000;
+  }
+  .phone-notch {
+    width:96px; height:22px; border-radius:0 0 16px 16px;
+    margin:0 auto; flex-shrink:0; position:relative; z-index:10;
+  }
+  .notch-dark { background:#04060e; }
+  .notch-auto { background:#1e1a18; }
+
+  .status-bar {
+    display:flex; justify-content:space-between;
+    padding:3px 20px 2px; font-size:0.58rem;
+    position:relative; z-index:10; flex-shrink:0;
+  }
+  .sb-dark { color:rgba(255,255,255,0.45); }
+  .sb-light { color:rgba(255,255,255,0.7); }
+
+  /* ── PHONE 1: home screenshot fills entire phone ── */
+  .phone-home-img {
+    flex:1; width:100%; object-fit:cover; object-position:top;
+    display:block;
+  }
+
+  /* ── PHONE 2: lyrics screenshot fills entire phone ── */
+  .phone-lyrics-wrap {
+    flex:1; position:relative; overflow:hidden;
+  }
+  .lyrics-bg-img {
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover; object-position:top;
+  }
+  /* overlay topbar so back button and title are legible */
+  .lyrics-topbar-overlay {
+    position:absolute; top:0; left:0; right:0; z-index:5;
+    display:flex; align-items:center; gap:8px;
+    padding:9px 14px 8px;
+    background:linear-gradient(to bottom, rgba(7,12,28,0.85) 0%, transparent 100%);
+  }
+  .back-btn {
+    width:26px; height:26px; border-radius:50%;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.2);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:1rem; color:#fff;
+    transition:background 0.14s; flex-shrink:0;
+  }
+  .back-btn:hover { background:rgba(255,255,255,0.22); }
+  .lyr-top-title {
+    font-family:'Playfair Display',serif;
+    font-size:0.9rem; font-weight:700; color:#fff;
+    flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .heart-btn { font-size:0.95rem; color:rgba(255,255,255,0.5); cursor:pointer; }
+
+
+  /* ── SONG TABS ── */
+  .song-tabs {
+    display:flex; flex-wrap:wrap; gap:6px;
+    justify-content:center; max-width:310px;
+  }
+  .tab-btn {
+    font-size:0.7rem; padding:4px 11px; border-radius:20px;
+    border:1px solid var(--border-accent);
+    background:var(--card-bg); color:var(--ink-soft);
+    cursor:pointer; transition:all 0.14s; letter-spacing:0.02em;
+  }
+  .tab-btn:hover { background:var(--accent-light); }
+  .tab-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+  /* ── DESCRIPTION ── */
+  .desc-block {
+    max-width:700px; margin-top:32px;
+    background:var(--card-bg); border:1px solid var(--border-accent);
+    border-radius:18px; padding:22px 26px;
+    box-shadow:0 4px 24px rgba(42,36,32,0.09);
+    margin-left:auto; margin-right:auto; margin-bottom:20px;
+  }
+  .desc-block h3 {
+    font-family:'Playfair Display',serif; font-size:1rem; font-weight:600;
+    color:var(--ink); margin-bottom:9px; display:flex; align-items:center; gap:7px;
+  }
+  .desc-block p { font-size:0.93rem; color:var(--ink-soft); line-height:1.68; }
+  .desc-block ul { margin:9px 0 0; padding-left:18px; list-style:disc; }
+  .desc-block ul li { font-size:0.91rem; color:var(--ink-soft); line-height:1.65; margin-bottom:3px; }
+  .desc-block ul li strong { color:var(--accent); font-weight:500; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(8px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .fade-in { animation: fadeUp 0.22s ease; }
+
+  /* CONTACT */
+  .contact-band {
+    background: var(--warm-paper);
+    border-top: 1px solid var(--border);
+    padding: 5.5rem 4rem;
+    text-align: center;
+  }
+  .contact-eyebrow { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .contact-eyebrow-line { width: 24px; height: 1px; background: var(--accent-mid); opacity: 0.6; }
+  .contact-eyebrow-text { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em; color: var(--accent-mid); text-transform: uppercase; }
+  .contact-band h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--ink); font-weight: 300; font-style: italic; margin-bottom: 0.75rem; }
+  .contact-band p { color: var(--muted); font-size: 0.9rem; font-weight: 300; margin-bottom: 2.5rem; }
+  .contact-btn {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.76rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+    border-radius: 1px; text-decoration: none;
+    transition: background 0.25s;
+  }
+  .contact-btn:hover { background: var(--accent-hover); }
+  .contact-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+  .contact-links a { font-size: 0.74rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .contact-links a:hover { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    background: var(--warm-white);
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer span { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em; }
+  .footer-links { display: flex; gap: 1.75rem; }
+  .footer-links a { font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-label   { animation: fadeUp 0.5s ease both; }
+  .hero-title   { animation: fadeUp 0.6s 0.08s ease both; }
+  .hero-sub     { animation: fadeUp 0.6s 0.18s ease both; }
+  .hero-actions { animation: fadeUp 0.6s 0.28s ease both; }
+  .hero-visual  { animation: fadeUp 0.7s 0.12s ease both; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1.5rem 2rem; }
+    .contact-band { padding: 3.5rem 2rem; }
+    footer { padding: 1.5rem 2rem; }
+  }
+  @media (max-width: 600px) {
+    .nav-links { gap: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">Wilgem <em>Mapalad</em></a>
+  <ul class="nav-links">
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="badge">Android Studio · XML Layout</div>
+  <h1>Lyrics Viewer</h1>
+  <p>A simple mobile activity showcasing song lyrics for the Filipino OPM artist <em>Sugarcane</em>. Click any song tab below the right phone to switch between lyrics screens.</p>
+</div>
+
+<div class="phones-row">
+
+  <!-- ══ PHONE 1 — Home Screenshot ══ -->
+  <div class="phone-col">
+    <div class="phone-col-label">Home Screen</div>
+    <div class="phone">
+      <img class="phone-home-img" id="home-img" src="lyricsviewer_ui/home.png" alt="Home Screen">
+    </div>
+  </div>
+
+  <!-- ══ PHONE 2 — Lyrics Screenshot ══ -->
+  <div class="phone-col">
+    <div class="phone-col-label">Lyrics View</div>
+    <div class="phone">
+      <img class="phone-lyrics-img" id="lyrics-img" src="lyricsviewer_ui/dalangin.png" alt="Lyrics">
+    </div>
+  </div>
+
+</div>
+
+<div class="desc-block">
+  <h3>📱 About This Activity</h3>
+  <p>This is a simple <strong>Android Studio</strong> lyrics viewer app for the OPM artist <em>Sugarcane</em>. The UI demonstrates two Activities side by side — the home song list on the left and the lyrics detail on the right.</p>
+  <ul>
+    <li><strong>Home Activity</strong> — Displays the song list with album art covers for all 6 tracks: Bituin, Dalangin, Gabi, Kung Maging Akin Ka, Leonora, and Maria Clara.</li>
+    <li><strong>Lyrics Detail Activity</strong> — Full song lyrics on a deep starry-night background, centered in white text. Each screen matches the aesthetic from the original app screenshots.</li>
+    <li><strong>Interactive</strong> — Use the tabs beneath the right phone to switch between any song's lyrics view instantly.</li>
+    <li><strong>Navigation</strong> — A translucent back button sits at the top-left, with a persistent bottom navigation bar (Songs / Favorites / Settings).</li>
+    <li><strong>Design</strong> — Dark cosmic background with white serif typography mirrors the intimate, poetic feel of Sugarcane's songs.</li>
+  </ul>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-band" id="contact">
+  <div class="contact-eyebrow">
+    <div class="contact-eyebrow-line"></div>
+    <span class="contact-eyebrow-text">Let's connect</span>
+    <div class="contact-eyebrow-line"></div>
+  </div>
+  <h2>Let's work together.</h2>
+  <p>Have a project or opportunity in mind? I'd love to hear about it.</p>
+  <a class="contact-btn" href="mailto:wilgemtmapalad@gmail.com">Say hello →</a>
+  <div class="contact-links">
+    <a href="tel:+639157620857">+63 915 762 0857</a>
+    <a href="mailto:wilgemtmapalad@gmail.com">wilgemtmapalad@gmail.com</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Wilgem T. Mapalad</span>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/wilgem-mapalad-4582813b1/">LinkedIn</a>
+    <a href="https://WilgemMapalad.github.io">GitHub</a>
+  </div>
+</footer>
+</body>
+</html>

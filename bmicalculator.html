@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMI Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --rose: #f4a0a0;
+    --rose-light: #fce8e8;
+    --rose-mid: #e88080;
+    --rose-dark: #c05555;
+    --blush: #fff0f0;
+    --warm-white: #FDFAF7;
+    --warm-paper: #F5EFE8;
+    --ink: #2A2420;
+    --ink-soft: #5C4F47;
+    --muted: #9A8A80;
+    --accent: #B5453A;
+    --accent-light: #FAF0EE;
+    --accent-mid: #D4706A;
+    --accent-hover: #9C3530;
+    --border: rgba(42,36,32,0.08);
+    --border-accent: rgba(181,69,58,0.18);
+    --card-bg: #FFFCFA;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 4rem;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+  }
+  .nav-logo em { font-style: italic; color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 1.75rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(244,160,160,0.3) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--rose-light);
+    border: 1px solid var(--rose);
+    color: var(--rose-dark);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.4rem 1.1rem;
+    border-radius: 99px;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--rose-dark); }
+  .hero p {
+    max-width: 560px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    font-weight: 300;
+  }
+
+  /* ABOUT */
+  .about {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  @media(max-width: 680px) { .about { grid-template-columns: 1fr; } }
+
+  .about-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(244,160,160,0.3);
+    border-radius: 20px;
+    padding: 1.8rem;
+    box-shadow: 0 2px 12px rgba(42,36,32,0.04);
+  }
+  .about-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    color: var(--rose-dark);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .about-card h3 span { font-size: 1.4rem; }
+  .about-card p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+
+  /* BMI range pills */
+  .range-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .pill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 1rem;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    font-weight: 500;
+  }
+  .pill.under  { background: #dbeafe; color: #1e40af; }
+  .pill.normal { background: #dcfce7; color: #15803d; }
+  .pill.over   { background: #fef3c7; color: #92400e; }
+  .pill.obese  { background: #fee2e2; color: #991b1b; }
+
+  /* APP SHOWCASE */
+  .showcase-title {
+    text-align: center;
+    padding: 1rem 2rem 2rem;
+  }
+  .showcase-title h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .showcase-title p {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  /* PHONE FRAMES */
+  .phone-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rose-dark);
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    padding-left: 4px;
+  }
+
+  .screens-row {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scroll-snap-type: x mandatory;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+  .screens-row::-webkit-scrollbar { height: 4px; }
+  .screens-row::-webkit-scrollbar-track { background: var(--rose-light); border-radius: 99px; }
+  .screens-row::-webkit-scrollbar-thumb { background: var(--rose); border-radius: 99px; }
+
+  .results-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .phone-wrap {
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+  }
+
+  .phone-frame {
+    background: #1a1a2e;
+    border-radius: 36px;
+    padding: 10px;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.15),
+      0 20px 60px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+    position: relative;
+  }
+
+  .phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 18px; left: 50%;
+    transform: translateX(-50%);
+    width: 90px; height: 22px;
+    background: #1a1a2e;
+    border-radius: 0 0 14px 14px;
+    z-index: 2;
+  }
+
+  .phone-screen {
+    border-radius: 28px;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+  }
+  .phone-screen img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .phone-caption {
+    text-align: center;
+    margin-top: 0.9rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .phone-caption strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  /* status badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+  .badge.normal { background: #dcfce7; color: #15803d; }
+  .badge.over   { background: #fef3c7; color: #92400e; }
+  .badge.obese  { background: #fee2e2; color: #991b1b; }
+  .badge.under  { background: #dbeafe; color: #1e40af; }
+
+  /* NOTE */
+  .note {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.83rem;
+    color: var(--muted);
+    border-top: 1px solid rgba(244,160,160,0.25);
+  }
+
+  /* CONTACT */
+  .contact-band {
+    background: var(--warm-paper);
+    border-top: 1px solid var(--border);
+    padding: 5.5rem 4rem;
+    text-align: center;
+  }
+  .contact-eyebrow { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .contact-eyebrow-line { width: 24px; height: 1px; background: var(--accent-mid); opacity: 0.6; }
+  .contact-eyebrow-text { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em; color: var(--accent-mid); text-transform: uppercase; }
+  .contact-band h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--ink); font-weight: 300; font-style: italic; margin-bottom: 0.75rem; }
+  .contact-band p { color: var(--muted); font-size: 0.9rem; font-weight: 300; margin-bottom: 2.5rem; }
+  .contact-btn {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.76rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+    border-radius: 1px; text-decoration: none;
+    transition: background 0.25s;
+  }
+  .contact-btn:hover { background: var(--accent-hover); }
+  .contact-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+  .contact-links a { font-size: 0.74rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .contact-links a:hover { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    background: var(--warm-white);
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer span { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em; }
+  .footer-links { display: flex; gap: 1.75rem; }
+  .footer-links a { font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1.5rem 2rem; }
+    .hero { padding: 1.75rem 2rem; }
+    .contact-band { padding: 3.5rem 2rem; }
+    footer { padding: 1.5rem 2rem; }
+  }
+  @media (max-width: 600px) {
+    .nav-links { gap: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">Wilgem <em>Mapalad</em></a>
+  <ul class="nav-links">
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Health &amp; Wellness Tool</div>
+  <h1>BMI <em>Calculator</em><br>App Showcase</h1>
+  <p>A simple, elegant mobile app that helps you understand your Body Mass Index — what it means, and what it says about your health.</p>
+</section>
+
+<!-- ABOUT -->
+<div class="about">
+  <div class="about-card">
+    <h3><span>⚖️</span> What is BMI?</h3>
+    <p>Body Mass Index (BMI) is a numerical value derived from a person's weight and height. It is a widely used screening tool to categorize whether a person's body weight is within a healthy range for their height.</p>
+    <p style="margin-top:0.75rem">The formula is: <strong>BMI = Weight (kg) ÷ Height² (m)</strong></p>
+  </div>
+  <div class="about-card">
+    <h3><span>📊</span> BMI Categories</h3>
+    <p style="margin-bottom:0.75rem; font-size:0.88rem;">The World Health Organization defines four standard weight categories:</p>
+    <div class="range-pills">
+      <div class="pill under"><span>Underweight</span><span>Below 18.5</span></div>
+      <div class="pill normal"><span>Normal Weight</span><span>18.5 – 24.9</span></div>
+      <div class="pill over"><span>Overweight</span><span>25.0 – 29.9</span></div>
+      <div class="pill obese"><span>Obese</span><span>30.0 and above</span></div>
+    </div>
+  </div>
+  <div class="about-card">
+    <h3><span>💡</span> Why does it matter?</h3>
+    <p>BMI helps identify potential health risks. Individuals with a BMI outside the normal range may face increased risks of cardiovascular disease, diabetes, hypertension, and other conditions. It's a quick first step in a health assessment.</p>
+  </div>
+  <div class="about-card">
+    <h3><span>⚠️</span> Limitations</h3>
+    <p>BMI is a general indicator and does not account for muscle mass, bone density, age, or fat distribution. Athletes may have a high BMI without excess fat. Always consult a healthcare professional for a complete health evaluation.</p>
+  </div>
+</div>
+
+<!-- SHOWCASE -->
+<div class="showcase-title">
+  <h2>App Screenshots</h2>
+  <p>See the app in action across all input states and result screens</p>
+</div>
+
+<div class="phone-section">
+
+  <!-- Input screens -->
+  <div class="section-label">Input Screens</div>
+  <div class="screens-row">
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <img src="bmicalculator_ui/input.png" alt="BMI Calculator input">
+        </div>
+      </div>
+      <div class="phone-caption"><strong>Empty Form</strong>Default state</div>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <img src="bmicalculator_ui/input_normal.png" alt="BMI Calculator input normal">
+        </div>
+      </div>
+      <div class="phone-caption"><strong>Wilgem T. Mapalad</strong>Height: 149cm · Weight: 51kg</div>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <img src="bmicalculator_ui/input_overweight.png" alt="BMI Calculator normal">
+        </div>
+      </div>
+      <div class="phone-caption"><strong>Wilgem T. Mapalad</strong>Height: 149cm · Weight: 60kg</div>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <img src="bmicalculator_ui/input_obese.png" alt="BMI Calculator obese">
+        </div>
+      </div>
+      <div class="phone-caption"><strong>Juan D. Cruz</strong>Height: 160cm · Weight: 100kg</div>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <img src="bmicalculator_ui/input_underweight.png" alt="BMI Calculator underweight">
+        </div>
+      </div>
+      <div class="phone-caption"><strong>Juan D. Cruz</strong>Height: 160cm · Weight: 30kg</div>
+    </div>
+  </div>
+
+  <!-- Result screens -->
+  <div class="section-label">Result Screens</div>
+  <div class="results-row">
+
+    <div>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <img src="bmicalculator_ui/normal.png" alt="BMI Calculator normal">
+        </div>
+      </div>
+      <div class="phone-caption">
+        <strong>BMI 22.97</strong>
+        <span class="badge normal">Normal Weight</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <img src="bmicalculator_ui/overweight.png" alt="BMI Calculator overweight">
+        </div>
+      </div>
+      <div class="phone-caption">
+        <strong>BMI 27.03</strong>
+        <span class="badge over">Overweight</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <img src="bmicalculator_ui/obese.png" alt="BMI Calculator obese">
+        </div>
+      </div>
+      <div class="phone-caption">
+        <strong>BMI 39.06</strong>
+        <span class="badge obese">Obese</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <img src="bmicalculator_ui/underweight.png" alt="BMI Calculator underweight">
+        </div>
+      </div>
+      <div class="phone-caption">
+        <strong>BMI 11.72</strong>
+        <span class="badge under">Underweight</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="note">
+  BMI Calculator App &nbsp;·&nbsp; For educational and informational purposes only &nbsp;·&nbsp; Not a substitute for medical advice
+</div>
+
+<!-- CONTACT -->
+<div class="contact-band" id="contact">
+  <div class="contact-eyebrow">
+    <div class="contact-eyebrow-line"></div>
+    <span class="contact-eyebrow-text">Let's connect</span>
+    <div class="contact-eyebrow-line"></div>
+  </div>
+  <h2>Let's work together.</h2>
+  <p>Have a project or opportunity in mind? I'd love to hear about it.</p>
+  <a class="contact-btn" href="mailto:wilgemtmapalad@gmail.com">Say hello →</a>
+  <div class="contact-links">
+    <a href="tel:+639157620857">+63 915 762 0857</a>
+    <a href="mailto:wilgemtmapalad@gmail.com">wilgemtmapalad@gmail.com</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Wilgem T. Mapalad</span>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/wilgem-mapalad-4582813b1/">LinkedIn</a>
+    <a href="https://WilgemMapalad.github.io">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
